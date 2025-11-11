@@ -6,4 +6,5 @@ public class GameConfig {
     public static final int ISLAND_HEIGHT = 20;
 
     public static final int CELL_DIRECTIONS = 4;
+    public static final int START_PERCENT_GROUP_COMPLETION = 40;
 }

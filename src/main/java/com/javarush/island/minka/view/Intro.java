@@ -1,6 +1,6 @@
 package com.javarush.island.minka.view;
 
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class Intro {
     public static void epigraph() {
@@ -24,6 +24,6 @@ public class Intro {
                 
                 Ф. ИСКАНДЕР, "КРОЛИКИ И УДАВЫ", 1982г.
                 """);
-        new Scanner(System.in).nextLine();
+//        new Scanner(System.in).nextLine();
     }
 }

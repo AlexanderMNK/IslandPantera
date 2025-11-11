@@ -6,7 +6,7 @@ import com.javarush.island.minka.entity.organisms.Organism;
 
 public class Grass extends Organism implements Movable {
     public Grass() {
-        super(GRASS, ICON_GRASS, AnimalProperties.get(GRASS).weight, AnimalProperties.get(GRASS).maxCountPerCell, AnimalProperties.get(GRASS).groupSize);
+        super(GRASS, ICON_GRASS, AnimalProperties.get(GRASS).maxWeight, AnimalProperties.get(GRASS).maxCountPerCell);
     }
 
     @Override

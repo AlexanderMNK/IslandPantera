@@ -6,10 +6,7 @@ import com.javarush.island.minka.entity.organisms.Organism;
 public class Wolf extends Animal {
 
     public Wolf() {
-        super(WOLF, ICON_WOLF,
-                AnimalProperties.get(WOLF).weight,
-                AnimalProperties.get(WOLF).maxCountPerCell,
-                AnimalProperties.get(WOLF).groupSize);
+        super(WOLF, ICON_WOLF, AnimalProperties.get(WOLF).maxWeight, AnimalProperties.get(WOLF).maxCountPerCell);
     }
 
     @Override

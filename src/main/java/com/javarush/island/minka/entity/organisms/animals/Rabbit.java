@@ -5,7 +5,7 @@ import com.javarush.island.minka.entity.organisms.Organism;
 
 public class Rabbit extends Animal {
     public Rabbit() {
-        super(RABBIT, ICON_RABBIT, AnimalProperties.get(RABBIT).weight, AnimalProperties.get(RABBIT).maxCountPerCell, AnimalProperties.get(RABBIT).groupSize);
+        super(RABBIT, ICON_RABBIT, AnimalProperties.get(RABBIT).maxWeight, AnimalProperties.get(RABBIT).maxCountPerCell);
     }
 
     @Override

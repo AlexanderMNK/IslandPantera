@@ -3,6 +3,7 @@ package com.javarush.island.minka.entity.organisms;
 import com.javarush.island.minka.api.Reproducible;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -16,16 +17,22 @@ public abstract class Organism implements Cloneable, Reproducible, AnimalConstan
     private long id = idCounter.incrementAndGet();
     @Getter
     private final String species;
+    @Getter
     private final String icon;
-    private final double weight;
-    private final int maxValuePerCell;
-    private final int groupSize;
-    protected Organism(String species, String icon, double weight, int maxValue, int groupSize) {
+    @Setter
+    private double flockWeight;
+//    private final double weight;
+    @Setter
+    private int countToFlock;
+//    private final int maxValuePerCell;
+//    private final int groupSize;
+    protected Organism(String species, String icon, double weight, int value) {
+//    protected Organism(String species, String icon, double weight, int maxValue, int groupSize) {
         this.species = species;
         this.icon = icon;
-        this.weight = weight;
-        this.maxValuePerCell = maxValue;
-        this.groupSize = groupSize;
+        this.flockWeight = weight;
+        this.countToFlock = value;
+//        this.groupSize = groupSize;
     }
 
     @Override
@@ -34,6 +41,7 @@ public abstract class Organism implements Cloneable, Reproducible, AnimalConstan
         try {
             organism = (Organism) super.clone();
             organism.id = idCounter.incrementAndGet();
+//            organism.numberOfIndividuals =
             return organism;
 //            return (Organism) super.clone();
         } catch (CloneNotSupportedException e) {
@@ -46,10 +54,9 @@ public abstract class Organism implements Cloneable, Reproducible, AnimalConstan
         return "\nOrganism{" +
 //                "species='" + species + '\'' +
                 "icon='" + icon + '\'' +
-                ", weight=" + weight +
+                ", flockWeight=" + flockWeight +
+                ", countToFlock=" + countToFlock +
                 ", id=" + id +
-//                ", maxValuePerCell=" + maxValuePerCell +
-//                ", groupSize=" + groupSize +
                 '}';
     }
 

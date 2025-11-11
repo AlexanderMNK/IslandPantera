@@ -4,6 +4,7 @@ import com.javarush.island.minka.config.AnimalProperties;
 import com.javarush.island.minka.config.GameConfig;
 import com.javarush.island.minka.entity.organisms.Organism;
 import com.javarush.island.minka.services.OrganismFactory;
+import com.javarush.island.minka.util.Random;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -47,7 +48,7 @@ public class Island {
     public void printStatistics() {
         for (int y = 0; y < cells.length; y++) {
             for (int x = 0; x < cells[y].length; x++) {
-                System.out.println("\nCell[" + x + "][" + y + "]" + getCells(x, y).getResidents().toString());
+                System.out.println("\nCell\t[" + x + "][" + y + "]" + getCells(x, y).getResidents().toString());
             }
         }
     }
@@ -57,20 +58,22 @@ public class Island {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Cell cell = cells[y][x];
+
                 // Для каждого прототипа из PROTOTYPES пытаемся добавить организмы до максимума для этой клетки
                 for (Organism prototype : prototype) {
                     String species = prototype.getSpecies();
-                    int maxCount = AnimalProperties.get(species).maxCountPerCell;
 
+                    // Генерируем группу количество особей.
+                    int maxCountToGroup = AnimalProperties.get(species).maxCountPerCell / AnimalProperties.get(species).maxGroupSize;
+                    final int startPercentGroupCompletion = GameConfig.START_PERCENT_GROUP_COMPLETION;
+                    int countOfGroup = Random.percent(maxCountToGroup, startPercentGroupCompletion);
+                    // Вычисляем общий вес группы.
+                    double weightOfGroup = AnimalProperties.get(species).maxWeight * countOfGroup;
                     // Добавляем организмы в клетку до maxCount
-                    for (int i = 0; i < maxCount; i++) {
-                        Organism organism = prototype.clone();
-//                        if (organism instanceof Animal) {
-                            cell.addOrganism(organism);
-//                        } else if (organism instanceof Grass) {
-//                            cell.addPlant((Grass) organism);
-//                        }
-                    }
+                    Organism organism = prototype.clone();
+                    organism.setCountToFlock(countOfGroup);
+                    organism.setFlockWeight(weightOfGroup);
+                    cell.addOrganism(organism);
                 }
             }
         }
