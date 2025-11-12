@@ -12,6 +12,8 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 public class Island {
     @Getter
+    private static Island instance;
+    @Getter
     private final int width;
     @Getter
     private final int height;
@@ -19,6 +21,7 @@ public class Island {
     private final Organism[] prototype;
 
     public Island(OrganismFactory prototype) {
+        instance = this;
         this.prototype = prototype.getPROTOTYPES();
         this.width = GameConfig.ISLAND_WIDTH;
         this.height = GameConfig.ISLAND_HEIGHT;
@@ -48,7 +51,11 @@ public class Island {
     public void printStatistics() {
         for (int y = 0; y < cells.length; y++) {
             for (int x = 0; x < cells[y].length; x++) {
-                System.out.println("\nCell\t[" + x + "][" + y + "]" + getCells(x, y).getResidents().toString());
+                System.out.println("\nCell[" + x + "][" + y + "]\n"
+                        + getCells(x, y).getPossibleMove()
+                        + "\n"
+                        + getCells(x, y).getResidents().toString()
+                );
             }
         }
     }
@@ -57,6 +64,8 @@ public class Island {
         // Проходим по всем клеткам острова
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+                cells[y][x].possibleMoveInit();
+
                 Cell cell = cells[y][x];
 
                 // Для каждого прототипа из PROTOTYPES пытаемся добавить организмы до максимума для этой клетки
