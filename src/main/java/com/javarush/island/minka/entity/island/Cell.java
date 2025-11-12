@@ -18,12 +18,15 @@ public class Cell {
     private final List<Cell> possibleMove = new ArrayList<>();
     // Лист всех организмов обитающих в клетке впоследствии лучше сделать map.
     private final ResidentSet residents = new ResidentSet();
-    //    @Getter
-    //    private final List<Animal> organisms = new LinkedList<>();
 
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
+        possibleMoveInit();
+    }
+
+    private void possibleMoveInit() {
+
     }
 
     public synchronized void addOrganism(Organism organism) {
@@ -46,8 +49,6 @@ public class Cell {
         return "Cell{" +
                 "x=" + x +
                 ", y=" + y +
-//                ", lock=" + lock +
-//                ", possibleMove=" + possibleMove +
                 ", residents=" + residents +
                 '}';
     }

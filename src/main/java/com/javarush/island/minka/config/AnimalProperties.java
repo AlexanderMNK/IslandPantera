@@ -48,9 +48,5 @@ public final class AnimalProperties {
             this.maxFoodToSate = maxFoodToSate;
             this.maxGroupSize = maxGroupSize;
         }
-
-//        public int size() {
-//            return maxGroupSize; //???
-//        }
     }
 }

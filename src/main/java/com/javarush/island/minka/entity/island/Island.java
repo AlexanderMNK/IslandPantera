@@ -24,7 +24,7 @@ public class Island {
         this.height = GameConfig.ISLAND_HEIGHT;
         this.cells = new Cell[height][width];
         initializeCells();
-        initialFilling();
+        initialFillingOrganisms();
     }
 
     private void initializeCells() {
@@ -53,7 +53,7 @@ public class Island {
         }
     }
 
-    public void initialFilling() {
+    public void initialFillingOrganisms() {
         // Проходим по всем клеткам острова
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
