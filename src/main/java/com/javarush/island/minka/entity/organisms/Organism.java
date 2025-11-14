@@ -11,39 +11,36 @@ import java.util.concurrent.atomic.AtomicLong;
 @EqualsAndHashCode(of = "id")
 public abstract class Organism implements Cloneable, Reproducible, AnimalConstants {
 
-    private final static AtomicLong idCounter = new AtomicLong(System.currentTimeMillis());
+    private static final AtomicLong idCounter = new AtomicLong(System.currentTimeMillis());
 
     @Getter
-    private long id = idCounter.incrementAndGet();
+    @Setter
+    private long id;
+
     @Getter
     private final String species;
     @Getter
     private final String icon;
     @Setter
     private double flockWeight;
-//    private final double weight;
+    @Getter
     @Setter
     private int countToFlock;
-//    private final int maxValuePerCell;
-//    private final int groupSize;
+
     protected Organism(String species, String icon, double weight, int value) {
-//    protected Organism(String species, String icon, double weight, int maxValue, int groupSize) {
         this.species = species;
         this.icon = icon;
         this.flockWeight = weight;
         this.countToFlock = value;
-//        this.groupSize = groupSize;
+        this.id = idCounter.incrementAndGet();
     }
 
     @Override
     public Organism clone() {
-        Organism organism;
         try {
-            organism = (Organism) super.clone();
+            Organism organism = (Organism) super.clone();
             organism.id = idCounter.incrementAndGet();
-//            organism.numberOfIndividuals =
             return organism;
-//            return (Organism) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
@@ -59,5 +56,4 @@ public abstract class Organism implements Cloneable, Reproducible, AnimalConstan
                 ", id=" + id +
                 '}';
     }
-
 }

@@ -26,11 +26,22 @@ public class Island {
         this.width = GameConfig.ISLAND_WIDTH;
         this.height = GameConfig.ISLAND_HEIGHT;
         this.cells = new Cell[height][width];
-        initializeCells();
+        createCells();
+        initializeCellsPossibleMove();
+
+//        initialFillingOrganisms();  // !!!
         initialFillingOrganisms();
     }
 
-    private void initializeCells() {
+    private void initializeCellsPossibleMove() {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                cells[y][x].possibleMoveInit();
+            }
+        }
+    }
+
+    private void createCells() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 cells[y][x] = new Cell(x, y);
@@ -48,44 +59,53 @@ public class Island {
     public void simulateTick() {
     }
 
-    public void printStatistics() {
-        for (int y = 0; y < cells.length; y++) {
-            for (int x = 0; x < cells[y].length; x++) {
-                System.out.println("\nCell[" + x + "][" + y + "]\n"
-                        + getCells(x, y).getPossibleMove()
-                        + "\n"
-                        + getCells(x, y).getResidents().toString()
-                );
+
+    /**
+     *  Создаём группы пока не достигнем лимита
+     *  по заполнению клетки в соответствии PERCENT_CELL_COMPLETION
+     *  от максимально возможного количества особей в клетке.
+     */public void initialFillingOrganisms() {
+        // Проходим по всем клеткам острова
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Cell cell = cells[y][x];
+
+                for (Organism prototype : prototype) {
+                    int maxCountPerCell = AnimalProperties.get(prototype.getSpecies()).maxCountPerCell;
+                    int currentCompletionCell = 0;
+
+                    while (currentCompletionCell < GameConfig.PERCENT_CELL_COMPLETION) {
+                        int totalCountAtMoment = cell.getResidents()
+                                .stream()
+                                .mapToInt(Organism::getCountToFlock)
+                                .sum();
+                        currentCompletionCell = totalCountAtMoment * 100 / maxCountPerCell;
+
+                        Organism organism = prototype.clone();
+                        Organism newOrganism = createOrganism(organism);
+                        cell.addOrganism(newOrganism);
+                    }
+                }
             }
         }
     }
 
-    public void initialFillingOrganisms() {
-        // Проходим по всем клеткам острова
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                cells[y][x].possibleMoveInit();
-
-                Cell cell = cells[y][x];
-
-                // Для каждого прототипа из PROTOTYPES пытаемся добавить организмы до максимума для этой клетки
-                for (Organism prototype : prototype) {
-                    String species = prototype.getSpecies();
-
-                    // Генерируем группу количество особей.
-                    int maxCountToGroup = AnimalProperties.get(species).maxCountPerCell / AnimalProperties.get(species).maxGroupSize;
-                    final int startPercentGroupCompletion = GameConfig.START_PERCENT_GROUP_COMPLETION;
-                    int countOfGroup = Random.percent(maxCountToGroup, startPercentGroupCompletion);
-                    // Вычисляем общий вес группы.
-                    double weightOfGroup = AnimalProperties.get(species).maxWeight * countOfGroup;
-                    // Добавляем организмы в клетку до maxCount
-                    Organism organism = prototype.clone();
-                    organism.setCountToFlock(countOfGroup);
-                    organism.setFlockWeight(weightOfGroup);
-                    cell.addOrganism(organism);
-                }
-            }
-        }
+    /**
+     * Создаём группу.
+     * Группа заполняется от START_PERCENT_GROUP_COMPLETION до 100%.
+     * Вес каждой особи в группе максимальный.
+     */
+    public Organism createOrganism(Organism organism) {
+        String species = organism.getSpecies();
+        // Генерируем количество особей в группе в зависимости от процента заполнения группы.
+        final int startPercentGroupCompletion = GameConfig.START_PERCENT_GROUP_COMPLETION;
+        int countOfGroup = Random.percent(AnimalProperties.get(species).maxGroupSize, startPercentGroupCompletion);
+        // Вычисляем общий вес группы. Считаем, что вес каждого животного в группе максимальный.
+        double weightOfGroup = AnimalProperties.get(species).maxWeight * countOfGroup;
+        // Добавляем организмы в клетку до maxCount
+        organism.setCountToFlock(countOfGroup);
+        organism.setFlockWeight(weightOfGroup);
+        return organism;
     }
 
     @Override

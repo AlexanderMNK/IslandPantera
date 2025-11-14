@@ -1,18 +1,29 @@
 package com.javarush.island.minka.services;
 
 import com.javarush.island.minka.entity.island.Island;
+import com.javarush.island.minka.view.View;
 
-public class GameProcessing {
+@SuppressWarnings("unused")
+public class GameProcessing extends Thread {
     private final Island island;
-    private final OrganismFactory organismFactory;
+    private final View view;
 
-    public GameProcessing(Island island, OrganismFactory organismFactory) {
+    public GameProcessing(Island island, View view1) {
         this.island = island;
-        this.organismFactory = organismFactory;
+        this.view = view1;
     }
 
-    public void start() {
-        System.out.println(organismFactory);
-        island.printStatistics();
+    @Override
+    public void run() {
+//        System.out.println(organismFactory);
+                island.simulateTick();
+//        view.printStatisticsAfterIslandCreate(island);
+
+
+
+
+        view.printStatisticIslandPercent();
+
+        view.printIsland();
     }
 }
