@@ -8,22 +8,33 @@ public class GameProcessing extends Thread {
     private final Island island;
     private final View view;
 
-    public GameProcessing(Island island, View view1) {
+    public GameProcessing(Island island, View view) {
         this.island = island;
-        this.view = view1;
+        this.view = view;
     }
 
     @Override
     public void run() {
-//        System.out.println(organismFactory);
-                island.simulateTick();
-//        view.printStatisticsAfterIslandCreate(island);
-
-
-
-
-        view.printStatisticIslandPercent();
-
-        view.printIsland();
+        int ticks = 30;
+        for (int i = 0; i < ticks; i++) {
+            island.simulateTick();
+//            view.printStatisticsAfterIslandCreate(island);
+//            view.printStatisticIslandPercent();
+            view.printIsland();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
     }
+
+//    @Override
+//    public void run() {
+//        island.simulateTick();
+//        view.printStatisticsAfterIslandCreate(island);
+//        view.printStatisticIslandPercent();
+//        view.printIsland();
+//    }
 }

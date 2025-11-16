@@ -2,8 +2,8 @@ package com.javarush.island.minka.services;
 
 import com.javarush.island.minka.entity.organisms.AnimalConstants;
 import com.javarush.island.minka.entity.organisms.Organism;
-import com.javarush.island.minka.entity.organisms.animals.Rabbit;
-import com.javarush.island.minka.entity.organisms.animals.Wolf;
+import com.javarush.island.minka.entity.organisms.animals.herbivore.Rabbit;
+import com.javarush.island.minka.entity.organisms.animals.predator.Wolf;
 import com.javarush.island.minka.entity.organisms.plants.Grass;
 import lombok.Getter;
 

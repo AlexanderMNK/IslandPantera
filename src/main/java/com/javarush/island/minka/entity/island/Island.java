@@ -1,5 +1,8 @@
 package com.javarush.island.minka.entity.island;
 
+import com.javarush.island.minka.api.Eatable;
+import com.javarush.island.minka.api.Movable;
+import com.javarush.island.minka.api.Reproducible;
 import com.javarush.island.minka.config.AnimalProperties;
 import com.javarush.island.minka.config.GameConfig;
 import com.javarush.island.minka.entity.organisms.Organism;
@@ -7,7 +10,13 @@ import com.javarush.island.minka.services.OrganismFactory;
 import com.javarush.island.minka.util.Random;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public class Island {
@@ -28,8 +37,6 @@ public class Island {
         this.cells = new Cell[height][width];
         createCells();
         initializeCellsPossibleMove();
-
-//        initialFillingOrganisms();  // !!!
         initialFillingOrganisms();
     }
 
@@ -57,8 +64,60 @@ public class Island {
     }
 
     public void simulateTick() {
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        List<Cell> allCells = new ArrayList<>();
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                allCells.add(cells[y][x]);
+            }
+        }
+        Collections.shuffle(allCells);
+
+        for (Cell cell : allCells) {
+            executor.submit(() -> {
+                cell.getLock().lock();
+                try {
+                    processMovements(cell);
+                    processEating(cell);
+                    processReproduction(cell);
+                } finally {
+                    cell.getLock().unlock();
+                }
+            });
+        }
+
+        executor.shutdown();
+        try {
+            executor.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
+    private void processMovements(Cell cell) {
+        for (Organism organism : new ArrayList<>(cell.getResidents())) {
+            if (organism instanceof Movable) {
+                ((Movable) organism).move();
+            }
+        }
+    }
+
+    private void processEating(Cell cell) {
+        for (Organism organism : new ArrayList<>(cell.getResidents())) {
+            if (organism instanceof Eatable) {
+                ((Eatable) organism).eat();
+            }
+        }
+    }
+
+    private void processReproduction(Cell cell) {
+        for (Organism organism : new ArrayList<>(cell.getResidents())) {
+            if (organism instanceof Reproducible) {
+                ((Reproducible) organism).reproduce();
+            }
+        }
+    }
 
     /**
      *  Создаём группы пока не достигнем лимита

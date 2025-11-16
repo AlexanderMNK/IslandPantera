@@ -1,6 +1,5 @@
 package com.javarush.island.minka.entity.organisms;
 
-import com.javarush.island.minka.api.Reproducible;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 @EqualsAndHashCode(of = "id")
-public abstract class Organism implements Cloneable, Reproducible, AnimalConstants {
+public abstract class Organism implements Cloneable, AnimalConstants {
 
     private static final AtomicLong idCounter = new AtomicLong(System.currentTimeMillis());
 

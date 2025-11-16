@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class AnimalProperties {
+    /** species,    maxWeight, maxCountPerCell, maxSpeed, maxFoodToSate, maxGroupSize
+     *              - лимиты, которые инициализируются в OrganismFactory, и находятся в PROTOTYPES
+     */
     public static final Map<String, OrganismLimits> PROPERTIES = new HashMap<>();
-
     static {
-        /*species,      maxWeight, maxCountPerCell, maxSpeed, maxFoodToSate, maxGroupSize
-        *               - лимиты, которые инициализируются в OrganismFactory, и находятся в PROTOTYPES */
         PROPERTIES.put("Wolf",  new OrganismLimits(50, 30, 3, 8, 5));
         PROPERTIES.put("Boa",   new OrganismLimits(15, 30, 1, 3, 1));
         PROPERTIES.put("Fox",   new OrganismLimits(8, 30, 2, 2, 1));
