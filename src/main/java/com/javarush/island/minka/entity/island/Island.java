@@ -68,9 +68,7 @@ public class Island {
         List<Cell> allCells = new ArrayList<>();
 
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                allCells.add(cells[y][x]);
-            }
+            allCells.addAll(Arrays.asList(cells[y]).subList(0, width));
         }
         Collections.shuffle(allCells);
 
@@ -88,10 +86,14 @@ public class Island {
         }
 
         executor.shutdown();
+        boolean terminated = false;
         try {
-            executor.awaitTermination(1, TimeUnit.MINUTES);
+            terminated = executor.awaitTermination(1, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        }
+        if (!terminated) {
+            System.out.println("Executor не завершил работу за отведенное время.");
         }
     }
 
