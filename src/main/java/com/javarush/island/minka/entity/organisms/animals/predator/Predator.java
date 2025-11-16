@@ -14,7 +14,7 @@ public abstract class Predator extends Animal {
 
     @Override
     public void move() {
-//        System.out.println(getIcon() + " движется.");
+        System.out.println(getIcon() + " движется.");
     }
 
     @Override
