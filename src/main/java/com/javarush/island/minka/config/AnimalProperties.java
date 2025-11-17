@@ -26,7 +26,7 @@ public final class AnimalProperties {
         PROPERTIES.put("Buffalo", new OrganismLimits(700, 10, 3, 100, 5));
         PROPERTIES.put("Duck",  new OrganismLimits(1, 200, 4, 0.15, 25));
         PROPERTIES.put("Caterpillar", new OrganismLimits(0.01, 1000, 0, 0, 100));
-        PROPERTIES.put("Grass", new OrganismLimits(1, 1000, 0, 0, 200));
+        PROPERTIES.put("Grass", new OrganismLimits(1, 1000, 0, 0, 50));
     }
 
     public static OrganismLimits get(String species) {

@@ -2,6 +2,7 @@ package com.javarush.island.minka.services;
 
 import com.javarush.island.minka.entity.organisms.AnimalConstants;
 import com.javarush.island.minka.entity.organisms.Organism;
+import com.javarush.island.minka.entity.organisms.animals.herbivore.Duck;
 import com.javarush.island.minka.entity.organisms.animals.herbivore.Rabbit;
 import com.javarush.island.minka.entity.organisms.animals.predator.Wolf;
 import com.javarush.island.minka.entity.organisms.plants.Grass;
@@ -17,7 +18,9 @@ public class OrganismFactory implements AnimalConstants {
             Wolf.class,
 //                Boa.class, Fox.class, Bear.class, Eagle.class, Horse.class, Deer.class,
             Rabbit.class,
-//                Mouse.class, Goat.class, Sheep.class, Boar.class, Buffalo.class, Duck.class, Caterpillar.class,
+//                Mouse.class, Goat.class, Sheep.class, Boar.class, Buffalo.class,
+            Duck.class,
+//            Caterpillar.class,
             Grass.class
     };
 

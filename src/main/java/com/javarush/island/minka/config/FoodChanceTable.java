@@ -66,7 +66,9 @@ public final class FoodChanceTable {
                 "Grass", 100
         ));
 
-        chanceMap.put("Caterpillar", Map.of());
+        chanceMap.put("Caterpillar", Map.of(
+                "Grass", 100
+        ));
     }
 
     public static int getChance(String predator, String prey) {

@@ -74,16 +74,19 @@ public class View {
                         String symbol = " ";
 
                         synchronized (cell) {
-                            if (!cell.getResidents().isEmpty()) {
-                                Organism first = cell.getResidents().getFirst();
+                            Organism first = null;
+                            for (Organism o : cell.getResidents()) {
+                                first = o;
+                                break;
+                            }
+
+                            if (first != null) {
                                 String species = first.getSpecies();
                                 if (species != null && !species.isEmpty()) {
                                     symbol = species.substring(0, 1).toUpperCase();
                                 } else {
                                     symbol = "?";
                                 }
-                                // Если иконка — эмодзи, ширина на одном "пробеле" визуально может быть больше,
-                                // но в консоли учитывайте фиксированный размер символа
                             }
                         }
                         // Выводим ячейку с ровно одной позицией + пробелы с каждой стороны

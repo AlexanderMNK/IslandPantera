@@ -8,21 +8,6 @@ public class Wolf extends Predator {
         super(WOLF, ICON_WOLF, AnimalProperties.get(WOLF).maxWeight, AnimalProperties.get(WOLF).maxCountPerCell);
     }
 
-//    @Override
-//    public void move() {
-//
-//    }
-//
-//    @Override
-//    public void reproduce() {
-//
-//    }
-//
-//    @Override
-//    public void eat() {
-//
-//    }
-
     @Override
     public Organism clone() {
         return super.clone();

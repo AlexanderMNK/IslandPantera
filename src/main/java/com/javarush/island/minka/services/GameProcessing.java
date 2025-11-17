@@ -19,8 +19,8 @@ public class GameProcessing extends Thread {
         for (int i = 0; i < ticks; i++) {
             island.simulateTick();
 //            view.printStatisticsAfterIslandCreate(island);
-            view.printStatisticIslandPercent();
-//            view.printIsland();
+            view.printStatisticIslandPercent();   // Общее состояние острова в процентах.
+//            view.printIsland();                   // Визуализация клеток.
             System.out.println("-".repeat(50));
             try {
                 Thread.sleep(1000);

@@ -3,9 +3,9 @@ package com.javarush.island.minka.entity.organisms.animals.herbivore;
 import com.javarush.island.minka.config.AnimalProperties;
 import com.javarush.island.minka.entity.organisms.Organism;
 
-public class Rabbit extends Herbivore {
-    public Rabbit() {
-        super(RABBIT, ICON_RABBIT, AnimalProperties.get(RABBIT).maxWeight, AnimalProperties.get(RABBIT).maxCountPerCell);
+public class Duck extends Herbivore {
+    public Duck() {
+        super(DUCK, ICON_DUCK, AnimalProperties.get(DUCK).maxWeight, AnimalProperties.get(DUCK).maxCountPerCell);
     }
 
     @Override
