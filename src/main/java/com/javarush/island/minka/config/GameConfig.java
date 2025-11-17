@@ -9,6 +9,6 @@ public class GameConfig {
     public static final int CONSOLE_HEIGHT = 20;
 
     public static int CELL_DIRECTIONS = 8;
-    public static final int START_PERCENT_GROUP_COMPLETION = 50;
+//    public static final int START_PERCENT_GROUP_COMPLETION = 50;
     public static final int PERCENT_CELL_COMPLETION = 30;
 }

@@ -7,7 +7,6 @@ import com.javarush.island.minka.config.AnimalProperties;
 import com.javarush.island.minka.config.GameConfig;
 import com.javarush.island.minka.entity.organisms.Organism;
 import com.javarush.island.minka.services.OrganismFactory;
-import com.javarush.island.minka.util.Random;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -153,20 +152,36 @@ public class Island {
 
     /**
      * Создаём группу.
-     * Группа заполняется от START_PERCENT_GROUP_COMPLETION до 100%.
+//     * Группа заполняется от START_PERCENT_GROUP_COMPLETION до 100%.
      * Вес каждой особи в группе максимальный.
      */
     public Organism createOrganism(Organism organism) {
         String species = organism.getSpecies();
         // Генерируем количество особей в группе в зависимости от процента заполнения группы.
-        final int startPercentGroupCompletion = GameConfig.START_PERCENT_GROUP_COMPLETION;
-        int countOfGroup = Random.percent(AnimalProperties.get(species).maxGroupSize, startPercentGroupCompletion);
+        //        final int startPercentGroupCompletion = GameConfig.START_PERCENT_GROUP_COMPLETION;
+        //        int countOfGroup = Random.percent(AnimalProperties.get(species).maxGroupSize, startPercentGroupCompletion);
+
+        int countOfGroup = AnimalProperties.get(species).maxGroupSize;
         // Вычисляем общий вес группы. Считаем, что вес каждого животного в группе максимальный.
         double weightOfGroup = AnimalProperties.get(species).maxWeight * countOfGroup;
         // Добавляем организмы в клетку до maxCount
         organism.setCountToFlock(countOfGroup);
         organism.setFlockWeight(weightOfGroup);
         return organism;
+    }
+
+    public Cell getCellsOfOrganism(Organism organism) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Cell cell = cells[y][x];
+//                synchronized (cell) { // для потокобезопасности
+                    if (cell.getResidents().contains(organism)) {
+                        return cell;
+                    }
+//                }
+            }
+        }
+        return null;
     }
 
     @Override

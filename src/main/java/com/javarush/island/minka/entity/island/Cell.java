@@ -55,6 +55,7 @@ public class Cell {
     }
 
     public synchronized void removeAnimal(Animal animal) {
+        residents.remove(animal);
     }
 
     public synchronized void addPlant(Grass plant) {
@@ -62,7 +63,7 @@ public class Cell {
     }
 
     public synchronized void removePlant(Grass plant) {
-
+        residents.remove(plant);
     }
 
     @Override

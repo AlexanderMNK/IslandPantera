@@ -19,8 +19,9 @@ public class GameProcessing extends Thread {
         for (int i = 0; i < ticks; i++) {
             island.simulateTick();
 //            view.printStatisticsAfterIslandCreate(island);
-//            view.printStatisticIslandPercent();
-            view.printIsland();
+            view.printStatisticIslandPercent();
+//            view.printIsland();
+            System.out.println("-".repeat(50));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

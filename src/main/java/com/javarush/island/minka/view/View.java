@@ -116,7 +116,11 @@ public class View {
     }
 
     public void printStatisticIslandPercent() {
-        final Map<String, Statistics.SpeciesStatistic> islandStatistic = statistics.getIslandStatistic();
-        islandStatistic.forEach((species, stat) -> System.out.println(species + ": " + stat.toString()));
+        Map<String, Statistics.SpeciesStatistic> stats = statistics.getIslandStatistic();
+
+        System.out.println("=== Текущая статистика острова ===");
+        stats.forEach((species, stat) ->
+                System.out.printf("%s: %d / %d (%.2f%%)%n",
+                        species, stat.currentCount, stat.maxPossibleCount, stat.percentOfMax));
     }
 }

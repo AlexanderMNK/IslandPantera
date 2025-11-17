@@ -6,23 +6,19 @@ import lombok.Setter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+@Getter
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 @EqualsAndHashCode(of = "id")
 public abstract class Organism implements Cloneable, AnimalConstants {
 
     private static final AtomicLong idCounter = new AtomicLong(System.currentTimeMillis());
 
-    @Getter
     @Setter
     private long id;
-
-    @Getter
     private final String species;
-    @Getter
     private final String icon;
     @Setter
     private double flockWeight;
-    @Getter
     @Setter
     private int countToFlock;
 

@@ -17,6 +17,6 @@ public class Grass extends Organism implements Movable, Reproducible {
 
     @Override
     public void move() {
-        System.out.println(getIcon() + " распространяется.");
+//        System.out.println(getIcon() + " распространяется.");
     }
 }

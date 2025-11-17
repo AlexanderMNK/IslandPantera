@@ -7,7 +7,7 @@ import java.util.Map;
 public final class FoodChanceTable {
     private static final Map<String, Map<String, Integer>> chanceMap = new HashMap<>();
 
-// "Wolf", "Boa" - удав, "Fox", "Bear", "Eagle",
+    // "Wolf", "Boa" - удав, "Fox", "Bear", "Eagle",
 // "Horse", "Deer" - олень, "Rabbit", "Mouse", "Goat" - козёл, "Sheep", "Boar" - кабан, "Buffalo", "Duck", "Caterpillar", "Grass"
     static {
         chanceMap.put("Wolf", Map.of(
@@ -54,6 +54,11 @@ public final class FoodChanceTable {
                 "Rabbit", 90,
                 "Mouse", 90,
                 "Duck", 80
+        ));
+
+        chanceMap.put("Rabbit", Map.of(
+                "Grass", 100,
+                "Caterpillar", 50
         ));
 
         chanceMap.put("Duck", Map.of(
