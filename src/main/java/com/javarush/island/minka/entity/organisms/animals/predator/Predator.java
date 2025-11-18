@@ -14,10 +14,10 @@ public class Predator extends Animal {
         return prey instanceof Animal;
     }
 
-    @Override
-    public void move() {
-
-    }
+//    @Override
+//    public void move() {
+//
+//    }
 
     @Override
     public void reproduce() {

@@ -12,7 +12,9 @@ import com.javarush.island.minka.entity.organisms.plants.Grass;
 import com.javarush.island.minka.util.Random;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public abstract class Animal extends Organism implements Movable, Eatable, Reproducible {
@@ -72,6 +74,46 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
                 currentCell.removeAnimal((Animal) prey);
             } else if (prey instanceof Grass) {
                 currentCell.removePlant((Grass) prey);
+            }
+        }
+    }
+
+    public void move() {
+        Cell currentCell = getCurrentCell();
+        if (currentCell == null) return;
+
+        int maxSpeed = AnimalProperties.get(this.getSpecies()).maxSpeed;
+
+        Set<Cell> reachableCells = new HashSet<>();
+        Set<Cell> frontier = new HashSet<>();
+        frontier.add(currentCell);
+
+        for (int step = 0; step < maxSpeed; step++) {
+            Set<Cell> nextFrontier = new HashSet<>();
+            for (Cell cell : frontier) {
+                for (Cell neighbor : cell.getPossibleMove()) {
+                    if (!reachableCells.contains(neighbor)) {
+                        reachableCells.add(neighbor);
+                        nextFrontier.add(neighbor);
+                    }
+                }
+            }
+            frontier = nextFrontier;
+        }
+
+        // Исключаем текущую клетку, в которую уже находится животное
+        reachableCells.remove(currentCell);
+
+        if (!reachableCells.isEmpty()) {
+            int index = Random.random(0, reachableCells.size() - 1);
+            Cell[] arr = reachableCells.toArray(new Cell[0]);
+            Cell newCell = arr[index];
+
+            synchronized (currentCell) {
+//                synchronized (newCell) {
+                    currentCell.removeAnimal(this);
+                    newCell.addOrganism(this);
+//                }
             }
         }
     }
