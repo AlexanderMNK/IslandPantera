@@ -19,21 +19,28 @@ public class Grass extends Organism implements Movable, Reproducible {
         if (currentCell == null) return;
 
         long grassCount;
-        synchronized (currentCell) {
+        currentCell.getLock().lock();
+        try {
             grassCount = currentCell.getResidents().stream()
                     .filter(o -> o instanceof Grass)
-                    .count();
+                    .mapToInt(Organism::getCountToFlock)  // суммируем количество травинок в каждом пучке
+                    .sum();
+        } finally {
+            currentCell.getLock().unlock();
         }
 
-        int maxGrassCount = AnimalProperties.get(GRASS).maxCountPerCell / this.getCountToFlock();
+        int maxGrassCount = AnimalProperties.get(GRASS).maxCountPerCell;
 
         if (grassCount < maxGrassCount) {
             if (Random.random(1, 101) <= 50) {
                 Grass newGrass = (Grass) this.clone();
-                synchronized (currentCell) {
-                    currentCell.addOrganism(newGrass);
+                currentCell.getLock().lock();
+                try {
+                    currentCell.addPlant(newGrass);
+                } finally {
+                    currentCell.getLock().unlock();
                 }
-                System.out.println(getIcon() + " размножилась в клетке.");
+                // System.out.println(getIcon() + " размножилась в клетке.");
             }
         }
     }

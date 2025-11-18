@@ -23,7 +23,7 @@ public class GameProcessing extends Thread {
 //            view.printIsland();                   // Визуализация клеток.
             System.out.println("-".repeat(50));
             try {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;

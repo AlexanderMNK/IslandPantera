@@ -47,10 +47,13 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
         for (Organism prey : residents) {
             if (prey == this) continue;
             int chance = FoodChanceTable.getChance(this.getSpecies(), prey.getSpecies());
+
+            final double maxFlockWeight = AnimalProperties.get(this.getSpecies()).maxWeight * this.getCountToFlock();
+
             if (chance > 0
                     && Random.random(1, 101) <= chance
                     && canEat(prey)
-                    && this.getFlockWeight() < AnimalProperties.get(this.getSpecies()).maxWeight) {
+                    && this.getFlockWeight() < maxFlockWeight) {
 
                 consumePrey(prey, currentCell);
                 ate = true;

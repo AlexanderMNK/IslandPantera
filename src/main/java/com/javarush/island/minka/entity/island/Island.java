@@ -73,14 +73,14 @@ public class Island {
 
         for (Cell cell : allCells) {
             executor.submit(() -> {
-                cell.getLock().lock();
-                try {
+//                cell.getLock().lock();
+//                try {
                     processEating(cell);
                     processMovements(cell);
                     processReproduction(cell);
-                } finally {
-                    cell.getLock().unlock();
-                }
+//                } finally {
+//                    cell.getLock().unlock();
+//                }
             });
         }
 
