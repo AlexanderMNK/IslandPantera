@@ -50,20 +50,41 @@ public class Cell {
         }
     }
 
-    public synchronized void addOrganism(Organism organism) {
-        residents.add(organism);
+    public void addOrganism(Organism organism) {
+        lock.lock();
+        try {
+            residents.add(organism);
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public synchronized void removeAnimal(Animal animal) {
-        residents.remove(animal);
+    public void removeAnimal(Animal animal) {
+        lock.lock();
+        try {
+            residents.remove(animal);
+        } finally {
+            lock.unlock();
+        }
     }
 
-    public synchronized void addPlant(Grass plant) {
+    public void addPlant(Grass plant) {
+        lock.lock();
+        try {
+            residents.add(plant);
+        } finally {
+            lock.unlock();
+        }
 
     }
 
-    public synchronized void removePlant(Grass plant) {
-        residents.remove(plant);
+    public void removePlant(Grass plant) {
+        lock.lock();
+        try {
+            residents.remove(plant);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override

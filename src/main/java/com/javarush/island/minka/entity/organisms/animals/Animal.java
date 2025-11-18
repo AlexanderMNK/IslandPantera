@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 
 public abstract class Animal extends Organism implements Movable, Eatable, Reproducible {
@@ -23,7 +24,11 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
     }
 
     public Cell getCurrentCell() {
-        return Island.getInstance().getCellsOfOrganism(this);
+        Cell cell = Island.getInstance().getCellsOfOrganism(this);
+        if (cell == null) {
+            throw new IllegalStateException("Организм " + this + " не найден в ячейке!");
+        }
+        return cell;
     }
 
     public final void eat() {
@@ -31,7 +36,14 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
         if (currentCell == null) return;
 
         boolean ate = false;
-        List<Organism> residents = new ArrayList<>(currentCell.getResidents());
+        List<Organism> residents;
+        currentCell.getLock().lock();
+        try {
+            residents = new ArrayList<>(currentCell.getResidents());
+        } finally {
+            currentCell.getLock().unlock();
+        }
+
         for (Organism prey : residents) {
             if (prey == this) continue;
             int chance = FoodChanceTable.getChance(this.getSpecies(), prey.getSpecies());
@@ -49,13 +61,18 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
         if (!ate) {
             double newWeightFlock = this.getFlockWeight() * 0.8;
             this.setFlockWeight(newWeightFlock);
-            System.out.println(this.getIcon() + " из " + this.getCountToFlock() + " не нашёл еды и похудел до " + String.format("%.2f", newWeightFlock));
+//            System.out.println(this.getIcon() + " из " + this.getCountToFlock() + " не нашёл еды и похудел до " + String.format("%.2f", newWeightFlock));
 
             double minWeight = AnimalProperties.get(this.getSpecies()).maxWeight * this.getCountToFlock() * 0.3;
 
             if (newWeightFlock < minWeight) {
-                currentCell.removeAnimal(this);
-                System.out.println(this.getIcon() + " умер из-за сильного голода.");
+                currentCell.getLock().lock();
+                try {
+                    currentCell.removeAnimal(this);
+                } finally {
+                    currentCell.getLock().unlock();
+                }
+//                System.out.println(this.getIcon() + " умер из-за сильного голода.");
             }
         }
     }
@@ -63,18 +80,23 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
     protected abstract boolean canEat(Organism prey);
 
     public void consumePrey(Organism prey, Cell currentCell) {
-        int preyCount = prey.getCountToFlock();
-        int eatenCount = Math.min(preyCount, this.getCountToFlock());
+        currentCell.getLock().lock();
+        try {
+            int preyCount = prey.getCountToFlock();
+            int eatenCount = Math.min(preyCount, this.getCountToFlock());
 
-        prey.setCountToFlock(preyCount - eatenCount);
-        this.setFlockWeight(this.getFlockWeight() + eatenCount * AnimalProperties.get(prey.getSpecies()).maxWeight);
+            prey.setCountToFlock(preyCount - eatenCount);
+            this.setFlockWeight(this.getFlockWeight() + eatenCount * AnimalProperties.get(prey.getSpecies()).maxWeight);
 
-        if (prey.getCountToFlock() <= 0) {
-            if (prey instanceof Animal) {
-                currentCell.removeAnimal((Animal) prey);
-            } else if (prey instanceof Grass) {
-                currentCell.removePlant((Grass) prey);
+            if (prey.getCountToFlock() <= 0) {
+                if (prey instanceof Animal) {
+                    currentCell.removeAnimal((Animal) prey);
+                } else if (prey instanceof Grass) {
+                    currentCell.removePlant((Grass) prey);
+                }
             }
+        } finally {
+            currentCell.getLock().unlock();
         }
     }
 
@@ -83,7 +105,6 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
         if (currentCell == null) return;
 
         int maxSpeed = AnimalProperties.get(this.getSpecies()).maxSpeed;
-
         Set<Cell> reachableCells = new HashSet<>();
         Set<Cell> frontier = new HashSet<>();
         frontier.add(currentCell);
@@ -101,20 +122,35 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
             frontier = nextFrontier;
         }
 
-        // Исключаем текущую клетку, в которую уже находится животное
         reachableCells.remove(currentCell);
 
-        if (!reachableCells.isEmpty()) {
-            int index = Random.random(0, reachableCells.size() - 1);
-            Cell[] arr = reachableCells.toArray(new Cell[0]);
-            Cell newCell = arr[index];
+        if (reachableCells.isEmpty()) return;
 
-            synchronized (currentCell) {
-//                synchronized (newCell) {
-                    currentCell.removeAnimal(this);
-                    newCell.addOrganism(this);
-//                }
-            }
+        int index = Random.random(0, reachableCells.size() - 1);
+        Cell[] arr = reachableCells.toArray(new Cell[0]);
+        Cell newCell = arr[index];
+
+        Cell firstLock = currentCell.hashCode() < newCell.hashCode() ? currentCell : newCell;
+        Cell secondLock = currentCell.hashCode() < newCell.hashCode() ? newCell : currentCell;
+
+        boolean lockedFirst = false;
+        boolean lockedSecond = false;
+        try {
+            lockedFirst = firstLock.getLock().tryLock(100, TimeUnit.MILLISECONDS);
+            if (!lockedFirst) return;
+            lockedSecond = secondLock.getLock().tryLock(100, TimeUnit.MILLISECONDS);
+            if (!lockedSecond) return;
+
+            currentCell.removeAnimal(this);
+            newCell.addOrganism(this);
+//            System.out.println(this.getId() + " из " + currentCell + " в " + newCell);
+//            System.out.println(currentCell.getResidents().contains(this));
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            if (lockedSecond) secondLock.getLock().unlock();
+            if (lockedFirst) firstLock.getLock().unlock();
         }
     }
 }

@@ -47,7 +47,8 @@ public class Statistics {
         for (int y = 0; y < island.getHeight(); y++) {
             for (int x = 0; x < island.getWidth(); x++) {
                 Cell cell = island.getCells(x, y);
-                synchronized (cell) {
+                cell.getLock().lock();
+                try {
                     for (Organism organism : cell.getResidents()) {
                         String species = organism.getSpecies();
                         SpeciesStatistic stat = stats.get(species);
@@ -56,6 +57,8 @@ public class Statistics {
                             stat.currentCount += organism.getCountToFlock();
                         }
                     }
+                } finally {
+                    cell.getLock().unlock();
                 }
             }
         }

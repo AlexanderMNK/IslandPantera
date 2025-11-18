@@ -75,8 +75,8 @@ public class Island {
             executor.submit(() -> {
                 cell.getLock().lock();
                 try {
-                    processMovements(cell);
                     processEating(cell);
+                    processMovements(cell);
                     processReproduction(cell);
                 } finally {
                     cell.getLock().unlock();
@@ -174,11 +174,14 @@ public class Island {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Cell cell = cells[y][x];
-//                synchronized (cell) { // для потокобезопасности
+                cell.getLock().lock();
+                try {
                     if (cell.getResidents().contains(organism)) {
                         return cell;
                     }
-//                }
+                } finally {
+                    cell.getLock().unlock();
+                }
             }
         }
         return null;
