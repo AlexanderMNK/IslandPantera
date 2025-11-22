@@ -7,9 +7,29 @@ import java.util.Map;
 public final class FoodChanceTable {
     private static final Map<String, Map<String, Integer>> chanceMap = new HashMap<>();
 
-    // "Wolf", "Boa" - удав, "Fox", "Bear", "Eagle",
-// "Horse", "Deer" - олень, "Rabbit", "Mouse", "Goat" - козёл, "Sheep", "Boar" - кабан, "Buffalo", "Duck", "Caterpillar", "Grass"
     static {
+        chanceMap.put("Bear", Map.of(
+                "Boa", 80,
+                "Horse", 40,
+                "Deer", 80,
+                "Rabbit", 80,
+                "Goat", 70,
+                "Sheep", 70,
+                "Boar", 50,
+                "Buffalo", 20,
+                "Duck", 10
+        ));
+
+        chanceMap.put("Boar", Map.of(
+                "Boa", 80,
+                "Horse", 40,
+                "Deer", 80,
+                "Goat", 70,
+                "Sheep", 70,
+                "Buffalo", 20,
+                "Grass", 30
+        ));
+
         chanceMap.put("Wolf", Map.of(
                 "Horse", 10,
                 "Deer", 15,
@@ -22,13 +42,6 @@ public final class FoodChanceTable {
                 "Duck", 40
         ));
 
-        chanceMap.put("Boa", Map.of(
-                "Fox", 15,
-                "Rabbit", 20,
-                "Mouse", 40,
-                "Duck", 10
-        ));
-
         chanceMap.put("Fox", Map.of(
                 "Rabbit", 70,
                 "Mouse", 90,
@@ -36,24 +49,38 @@ public final class FoodChanceTable {
                 "Caterpillar", 40
         ));
 
-        chanceMap.put("Bear", Map.of(
-                "Boa", 80,
-                "Horse", 40,
-                "Deer", 80,
-                "Rabbit", 80,
-                "Mouse", 90,
-                "Goat", 70,
-                "Sheep", 70,
-                "Boar", 50,
-                "Buffalo", 20,
+        chanceMap.put("Boa", Map.of(
+                "Fox", 15,
+                "Rabbit", 20,
+                "Mouse", 40,
                 "Duck", 10
         ));
 
         chanceMap.put("Eagle", Map.of(
-                "Fox", 10,
-                "Rabbit", 90,
-                "Mouse", 90,
-                "Duck", 80
+                "Fox", 30,
+                "Rabbit", 70,
+                "Mouse", 20,
+                "Duck", 60
+        ));
+
+        chanceMap.put("Buffalo", Map.of(
+                "Grass", 100
+        ));
+
+        chanceMap.put("Horse", Map.of(
+                "Grass", 100
+        ));
+
+        chanceMap.put("Goat", Map.of(
+                "Grass", 100
+        ));
+
+        chanceMap.put("Sheep", Map.of(
+                "Grass", 100
+        ));
+
+        chanceMap.put("Deer", Map.of(
+                "Grass", 100
         ));
 
         chanceMap.put("Rabbit", Map.of(
@@ -62,8 +89,8 @@ public final class FoodChanceTable {
         ));
 
         chanceMap.put("Duck", Map.of(
-                "Caterpillar", 90,
-                "Grass", 100
+                "Caterpillar", 80,
+                "Grass", 90
         ));
 
         chanceMap.put("Caterpillar", Map.of(

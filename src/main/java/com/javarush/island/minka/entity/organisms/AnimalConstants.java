@@ -2,6 +2,8 @@ package com.javarush.island.minka.entity.organisms;
 
 @SuppressWarnings("unused")
 public interface AnimalConstants {
+    int REPRODUCTION_CHANCE_PREDATOR = 30;
+    int REPRODUCTION_CHANCE_HERBIVORE = 70;
 
     String WOLF = "Wolf";
     String BOA = "Boa";

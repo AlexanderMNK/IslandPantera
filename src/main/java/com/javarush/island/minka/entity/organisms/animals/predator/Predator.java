@@ -13,9 +13,4 @@ public class Predator extends Animal {
         // Хищник ест только животных
         return prey instanceof Animal;
     }
-
-    @Override
-    public void reproduce() {
-
-    }
 }

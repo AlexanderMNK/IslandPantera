@@ -8,6 +8,7 @@ import com.javarush.island.minka.config.FoodChanceTable;
 import com.javarush.island.minka.entity.island.Cell;
 import com.javarush.island.minka.entity.island.Island;
 import com.javarush.island.minka.entity.organisms.Organism;
+import com.javarush.island.minka.entity.organisms.animals.predator.Predator;
 import com.javarush.island.minka.entity.organisms.plants.Grass;
 import com.javarush.island.minka.util.Random;
 
@@ -146,14 +147,40 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
 
             currentCell.removeAnimal(this);
             newCell.addOrganism(this);
-//            System.out.println(this.getId() + " из " + currentCell + " в " + newCell);
-//            System.out.println(currentCell.getResidents().contains(this));
-
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
             if (lockedSecond) secondLock.getLock().unlock();
             if (lockedFirst) firstLock.getLock().unlock();
+        }
+    }
+
+    public void reproduce() {
+        Cell currentCell = getCurrentCell();
+        if (currentCell == null) return;
+        int currentCount;
+        currentCell.getLock().lock();
+        try {
+            currentCount = currentCell.getResidents().stream()
+                    .filter(o -> o.getSpecies().equals(this.getSpecies()))
+                    .mapToInt(Organism::getCountToFlock)
+                    .sum();
+            int maxCount = AnimalProperties.get(this.getSpecies()).maxCountPerCell;
+            if (currentCount < maxCount) {
+                int reproductionChance;
+                if (this instanceof Predator) {
+                    reproductionChance = REPRODUCTION_CHANCE_PREDATOR;
+                } else {
+                    reproductionChance = REPRODUCTION_CHANCE_HERBIVORE;
+                }
+                final int randomChance = Random.random(1, 101);
+                if (randomChance <= reproductionChance) {
+                    Organism newOrganism = this.clone();
+                    currentCell.addOrganism(newOrganism);
+                }
+            }
+        } finally {
+            currentCell.getLock().unlock();
         }
     }
 }

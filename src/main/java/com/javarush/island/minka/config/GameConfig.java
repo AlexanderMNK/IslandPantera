@@ -10,5 +10,5 @@ public class GameConfig {
 
     public static int CELL_DIRECTIONS = 8;
 //    public static final int START_PERCENT_GROUP_COMPLETION = 50;
-    public static final int PERCENT_CELL_COMPLETION = 30;
+    public static final int PERCENT_CELL_COMPLETION = 50;
 }

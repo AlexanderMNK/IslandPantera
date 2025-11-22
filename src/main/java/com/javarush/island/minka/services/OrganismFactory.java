@@ -2,9 +2,8 @@ package com.javarush.island.minka.services;
 
 import com.javarush.island.minka.entity.organisms.AnimalConstants;
 import com.javarush.island.minka.entity.organisms.Organism;
-import com.javarush.island.minka.entity.organisms.animals.herbivore.Duck;
-import com.javarush.island.minka.entity.organisms.animals.herbivore.Rabbit;
-import com.javarush.island.minka.entity.organisms.animals.predator.Wolf;
+import com.javarush.island.minka.entity.organisms.animals.herbivore.*;
+import com.javarush.island.minka.entity.organisms.animals.predator.*;
 import com.javarush.island.minka.entity.organisms.plants.Grass;
 import lombok.Getter;
 
@@ -13,17 +12,28 @@ import java.lang.reflect.InvocationTargetException;
 public class OrganismFactory implements AnimalConstants {
     @Getter
     Organism[] PROTOTYPES;
-
+    /** "Wolf", "Boa" - удав, "Fox", "Bear", "Eagle",
+     *  "Horse", "Deer" - олень, "Rabbit", "Mouse", "Goat" - козёл,
+     *  "Sheep", "Boar" - кабан, "Buffalo", "Duck", "Caterpillar", "Grass"
+     */
     Class<?>[] TYPES = {
+            Bear.class,
+            Boar.class,
             Wolf.class,
-//                Boa.class, Fox.class, Bear.class, Eagle.class, Horse.class, Deer.class,
+            Fox.class,
+            Boa.class,
+            Eagle.class,
+            Buffalo.class,
+            Horse.class,
+            Goat.class,
+            Sheep.class,
+            Deer.class,
             Rabbit.class,
-//                Mouse.class, Goat.class, Sheep.class, Boar.class, Buffalo.class,
             Duck.class,
-//            Caterpillar.class,
-            Grass.class
+            Mouse.class,
+            Grass.class,
+            Caterpillar.class,
     };
-
 
     public OrganismFactory() {
         this.PROTOTYPES = create(TYPES);
@@ -31,7 +41,6 @@ public class OrganismFactory implements AnimalConstants {
 
     public Organism create(Class<?> type) {
         try {
-            // Вызываем конструктор без параметров и создаем новый экземпляр
             return (Organism) type.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                  InvocationTargetException e) {

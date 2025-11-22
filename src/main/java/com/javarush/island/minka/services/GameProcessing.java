@@ -23,19 +23,11 @@ public class GameProcessing extends Thread {
 //            view.printIsland();                   // Визуализация клеток.
             System.out.println("-".repeat(50));
             try {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
             }
         }
     }
-
-//    @Override
-//    public void run() {
-//        island.simulateTick();
-//        view.printStatisticsAfterIslandCreate(island);
-//        view.printStatisticIslandPercent();
-//        view.printIsland();
-//    }
 }

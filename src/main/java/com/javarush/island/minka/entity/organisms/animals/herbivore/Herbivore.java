@@ -14,13 +14,13 @@ public class Herbivore extends Animal {
         return prey instanceof Grass;
     }
 
-    @Override
-    public void move() {
-
-    }
-
-    @Override
-    public void reproduce() {
-
-    }
+//    @Override
+//    public void move() {
+//
+//    }
+//
+//    @Override
+//    public void reproduce() {
+//
+//    }
 }
