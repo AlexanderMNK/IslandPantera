@@ -73,14 +73,9 @@ public class Island {
 
         for (Cell cell : allCells) {
             executor.submit(() -> {
-//                cell.getLock().lock();
-//                try {
                     processEating(cell);
                     processMovements(cell);
                     processReproduction(cell);
-//                } finally {
-//                    cell.getLock().unlock();
-//                }
             });
         }
 
@@ -157,9 +152,6 @@ public class Island {
      */
     public Organism createOrganism(Organism organism) {
         String species = organism.getSpecies();
-        // Генерируем количество особей в группе в зависимости от процента заполнения группы.
-        //        final int startPercentGroupCompletion = GameConfig.START_PERCENT_GROUP_COMPLETION;
-        //        int countOfGroup = Random.percent(AnimalProperties.get(species).maxGroupSize, startPercentGroupCompletion);
 
         int countOfGroup = AnimalProperties.get(species).maxGroupSize;
         // Вычисляем общий вес группы. Считаем, что вес каждого животного в группе максимальный.

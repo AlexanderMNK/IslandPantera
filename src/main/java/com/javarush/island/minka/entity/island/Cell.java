@@ -17,7 +17,6 @@ public class Cell {
     private final int y;
     private final Lock lock = new ReentrantLock();
     private final List<Cell> possibleMove = new ArrayList<>();
-    // Лист всех организмов обитающих в клетке впоследствии лучше сделать map?
     private final ResidentSet residents = new ResidentSet();
 
     public Cell(int x, int y) {
@@ -90,13 +89,9 @@ public class Cell {
     @Override
     public String toString() {
         return "Cell{" +
-//                "x=" +
                 x +
-//                ", y=" +
                 ", " +
                 y +
-//                ", possibleMove=[" + possibleMoveString + "]\n" +
-                //", residents=" + residents +
                 '}';
     }
 }

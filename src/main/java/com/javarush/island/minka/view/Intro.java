@@ -24,6 +24,5 @@ public class Intro {
                 
                 Ф. ИСКАНДЕР, "КРОЛИКИ И УДАВЫ", 1982г.
                 """);
-//        new Scanner(System.in).nextLine();
     }
 }

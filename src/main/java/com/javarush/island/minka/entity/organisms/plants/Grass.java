@@ -40,13 +40,11 @@ public class Grass extends Organism implements Movable, Reproducible {
                 } finally {
                     currentCell.getLock().unlock();
                 }
-                // System.out.println(getIcon() + " размножилась в клетке.");
             }
         }
     }
 
     @Override
     public void move() {
-//        System.out.println(getIcon() + " распространяется.");
     }
 }

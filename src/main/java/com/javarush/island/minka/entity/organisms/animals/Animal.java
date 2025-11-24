@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-
 public abstract class Animal extends Organism implements Movable, Eatable, Reproducible {
     protected Animal(String species, String icon, double flockWeight, int countToFlock) {
         super(species, icon, flockWeight, countToFlock);
@@ -48,14 +47,11 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
         for (Organism prey : residents) {
             if (prey == this) continue;
             int chance = FoodChanceTable.getChance(this.getSpecies(), prey.getSpecies());
-
             final double maxFlockWeight = AnimalProperties.get(this.getSpecies()).maxWeight * this.getCountToFlock();
-
             if (chance > 0
                     && Random.random(1, 101) <= chance
                     && canEat(prey)
                     && this.getFlockWeight() < maxFlockWeight) {
-
                 consumePrey(prey, currentCell);
                 ate = true;
                 break;
@@ -63,12 +59,9 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
         }
 
         if (!ate) {
-            double newWeightFlock = this.getFlockWeight() * 0.8;
+            double newWeightFlock = this.getFlockWeight() * 0.9;
             this.setFlockWeight(newWeightFlock);
-//            System.out.println(this.getIcon() + " из " + this.getCountToFlock() + " не нашёл еды и похудел до " + String.format("%.2f", newWeightFlock));
-
-            double minWeight = AnimalProperties.get(this.getSpecies()).maxWeight * this.getCountToFlock() * 0.3;
-
+            double minWeight = AnimalProperties.get(this.getSpecies()).maxWeight * this.getCountToFlock() * 0.2;
             if (newWeightFlock < minWeight) {
                 currentCell.getLock().lock();
                 try {
@@ -76,7 +69,6 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
                 } finally {
                     currentCell.getLock().unlock();
                 }
-//                System.out.println(this.getIcon() + " умер из-за сильного голода.");
             }
         }
     }
@@ -91,7 +83,6 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
 
             prey.setCountToFlock(preyCount - eatenCount);
             this.setFlockWeight(this.getFlockWeight() + eatenCount * AnimalProperties.get(prey.getSpecies()).maxWeight);
-
             if (prey.getCountToFlock() <= 0) {
                 if (prey instanceof Animal) {
                     currentCell.removeAnimal((Animal) prey);
@@ -177,6 +168,9 @@ public abstract class Animal extends Organism implements Movable, Eatable, Repro
                 if (randomChance <= reproductionChance) {
                     Organism newOrganism = this.clone();
                     currentCell.addOrganism(newOrganism);
+                    newOrganism.setFlockWeight(this.getFlockWeight() / 2);
+                    currentCell.addOrganism(newOrganism);
+                    this.setFlockWeight(this.getFlockWeight() / 2);
                 }
             }
         } finally {

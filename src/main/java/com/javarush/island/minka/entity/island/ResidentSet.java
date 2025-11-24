@@ -5,11 +5,6 @@ import lombok.Getter;
 
 import java.util.HashSet;
 
-//@SuppressWarnings("unused")
-//public class ResidentSet extends LinkedHashSet<Organism> {
-//    private final LinkedHashSet<Organism> residentSet = new LinkedHashSet<>();
-//}
-
 @Getter
 @SuppressWarnings("unused")
 public class ResidentSet extends HashSet<Organism> {

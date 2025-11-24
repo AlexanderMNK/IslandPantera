@@ -49,15 +49,12 @@ public class View {
                 int endX = Math.min(startX + blockWidth, islandWidth);
                 int endY = Math.min(startY + blockHeight, islandHeight);
 
-                // Печать заголовка со столбцами
-                System.out.print("    "); // 4 пробела под номера строк слева
+                System.out.print("    ");
                 for (int x = startX; x < endX; x++) {
-                    // Ширина заголовка — 3 символа + один пробел по краям
                     System.out.printf(" %2d ", x);
                 }
                 System.out.println();
 
-                // Верхняя рамка блока
                 System.out.print("   ┌");
                 for (int x = startX; x < endX; x++) {
                     System.out.print("───");
@@ -65,9 +62,7 @@ public class View {
                 }
                 System.out.println("┐");
 
-                // Вывод строк с нумерацией и содержимым клеток
                 for (int y = startY; y < endY; y++) {
-                    // Номер строки ровно 3 символа + символ │
                     System.out.printf("%3d│", y);
                     for (int x = startX; x < endX; x++) {
                         Cell cell = island.getCells(x, y);
@@ -89,12 +84,10 @@ public class View {
                                 }
                             }
                         }
-                        // Выводим ячейку с ровно одной позицией + пробелы с каждой стороны
                         System.out.print(" " + symbol + " │");
                     }
                     System.out.println();
 
-                    // Горизонтальный разделитель ячеек (кроме последней строки блока)
                     if (y < endY - 1) {
                         System.out.print("   ├");
                         for (int x = startX; x < endX; x++) {
@@ -105,7 +98,6 @@ public class View {
                     }
                 }
 
-                // Нижняя рамка блока
                 System.out.print("   └");
                 for (int x = startX; x < endX; x++) {
                     System.out.print("───");

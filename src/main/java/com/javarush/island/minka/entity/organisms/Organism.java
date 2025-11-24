@@ -44,7 +44,6 @@ public abstract class Organism implements Cloneable, AnimalConstants {
     @Override
     public String toString() {
         return "\nOrganism{" +
-//                "species='" + species + '\'' +
                 "icon='" + icon + '\'' +
                 ", flockWeight=" + flockWeight +
                 ", countToFlock=" + countToFlock +
